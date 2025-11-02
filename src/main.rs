@@ -1,6 +1,6 @@
 fn main() {
     println!("Hello, world!");
-    tasks::first::execute();
+    tasks::second::execute();
 }
 
 mod tasks {
@@ -43,6 +43,23 @@ mod tasks {
         }
     }
     pub mod second {
-        
+        pub fn execute() {
+            let input = "welcome to our world";
+            let arr = input.split_whitespace();
+            let mut output = String::new();
+            for c in arr {
+                let mut chars = c.chars();
+                let tmp = chars.next().unwrap();
+                if tmp == 'o' {
+                    let hay = format!("{}-hay ",c);
+                    output.push_str(&hay);
+                }
+                else {
+                    let ay = format!("{}-{}ay ",chars.as_str(), tmp);
+                    output.push_str(&ay);
+                }
+            }
+            println!("{}", output);
+        }
     }
 }
