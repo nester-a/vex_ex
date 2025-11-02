@@ -51,15 +51,62 @@ mod tasks {
                 let mut chars = c.chars();
                 let tmp = chars.next().unwrap();
                 if tmp == 'o' {
-                    let hay = format!("{}-hay ",c);
+                    let hay = format!("{}-hay ", c);
                     output.push_str(&hay);
-                }
-                else {
-                    let ay = format!("{}-{}ay ",chars.as_str(), tmp);
+                } else {
+                    let ay = format!("{}-{}ay ", chars.as_str(), tmp);
                     output.push_str(&ay);
                 }
             }
             println!("{}", output);
+        }
+    }
+    pub mod third {
+        use std::{collections::HashMap, io};
+
+        pub fn execute() {
+            println!("welcome to our company CMD interface");
+            println!("we have some main commands:");
+            println!("'deps' shows all departmens");
+            println!("'all' shows all empls with their deps");
+            println!("'add -empl_name -dep_name' add new empl to existed dep");
+            println!("'exit' close program");
+
+            let deps = vec!["it", "account", "hr"];
+            let mut all = HashMap::new();
+            all.insert(String::from("alex_nesterov"), "it");
+
+            loop {
+                println!("please enter the command...");
+                let mut cmd = String::new();
+
+                io::stdin().read_line(&mut cmd).expect("incorrect input");
+
+                let mut input = cmd.split_whitespace();
+                let next = input.next();
+                match next {
+                    Some(val) => {
+                        match val{
+                            "deps" => println!("{:?}", &deps),
+                            "all" => println!("{:?}", all),
+                            "add" => {
+                                let empl = input.next().unwrap();
+                                let tar_dep = input.next().unwrap();
+
+                                for dep in &deps {
+                                    if *dep == tar_dep {
+                                        all.insert(String::from(empl), tar_dep);
+                                        break;
+                                    }
+                                }
+                            },
+                            "exit" => break,
+                            _ => println!("incorrect input")
+                        }
+                    },
+                    None => println!("incorrect input")
+                }
+            }
         }
     }
 }
