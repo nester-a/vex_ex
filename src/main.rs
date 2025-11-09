@@ -1,6 +1,6 @@
 fn main() {
     println!("Hello, world!");
-    tasks::second::execute();
+    tasks::third::execute();
 }
 
 mod tasks {
@@ -73,38 +73,33 @@ mod tasks {
             println!("'exit' close program");
 
             let deps = vec!["it", "account", "hr"];
-            let mut all = HashMap::new();
-            all.insert(String::from("alex_nesterov"), "it");
+            let mut all: HashMap<String, String>= HashMap::new();
+            all.insert(String::from("alex_nesterov"), String::from("it"));
 
             loop {
                 println!("please enter the command...");
                 let mut cmd = String::new();
 
                 io::stdin().read_line(&mut cmd).expect("incorrect input");
+                let mut cmd_args = cmd.split_whitespace();
 
-                let mut input = cmd.split_whitespace();
-                let next = input.next();
-                match next {
-                    Some(val) => {
-                        match val{
-                            "deps" => println!("{:?}", &deps),
-                            "all" => println!("{:?}", all),
-                            "add" => {
-                                let empl = input.next().unwrap();
-                                let tar_dep = input.next().unwrap();
+                let arg = cmd_args.next().unwrap();
 
-                                for dep in &deps {
-                                    if *dep == tar_dep {
-                                        all.insert(String::from(empl), tar_dep);
-                                        break;
-                                    }
-                                }
-                            },
-                            "exit" => break,
-                            _ => println!("incorrect input")
+                match arg {
+                    "deps" => println!("{deps:?}"),
+                    "all" => println!("{all:?}"),
+                    "add" => {
+                        let empl = cmd_args.next().unwrap();
+                        let tar_dep = cmd_args.next().unwrap();
+
+                        for dep in &deps {
+                            if *dep == tar_dep {
+                                all.insert(String::from(empl), String::from(tar_dep));
+                            }
                         }
-                    },
-                    None => println!("incorrect input")
+                    }
+                    "exit" => break,
+                    _ => println!("incorrect input"),
                 }
             }
         }
